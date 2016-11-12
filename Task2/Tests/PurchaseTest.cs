@@ -5,23 +5,44 @@ using System.Text;
 using System.Threading.Tasks;
 using Task2;
 
-namespace Tests
+
+namespace NUnit.Tests
 {
+    using System;
     using NUnit.Framework;
+    using Task2;
+    using System.Xml.Serialization;
+    using System.Xml;
 
     [TestFixture]
-    public class PurchaseTest
+    public class SuccessTests
     {
-        [Test]
-        public void XmlDes()
+        XmlSerializer serializer;
+        XmlReader reader;
+        string address;
+        data data;
+
+        [SetUp]
+        public void Init()
         {
-            data data, postData;
+            serializer = new XmlSerializer(typeof(data));
+            address = RequestApi.AddressForm("Q-330");
+            reader = RequestApi.HttpRequest(address);
+            data = Program.dataDeserialize(reader, serializer);
+        }
 
-            data = data.dataDeserialize("Z-316.xml");
-            data.dataSerialize("Z-316(1).xml");
-            postData = data.dataDeserialize("Z-316(1).xml");
+        [Test]
+        public void Add()
+        {
+            data = Program.dataDeserialize(reader, serializer);
+            TestActionAttribute.Equals("Q-330", data._embedded.Purchase.Id);
+            // ...
+        }
 
-            Assert.AreEqual(data, postData);
+        [TearDown]
+        public void Dispose()
+        {
+            
         }
     }
 }

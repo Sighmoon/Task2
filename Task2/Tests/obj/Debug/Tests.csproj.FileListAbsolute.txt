@@ -5,3 +5,5 @@ C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\bin\Debug\nunit.framewo
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\obj\Debug\Tests.dll
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\obj\Debug\Tests.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\bin\Debug\Task2.exe
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\bin\Debug\Task2.pdb
