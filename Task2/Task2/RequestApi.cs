@@ -6,20 +6,26 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using System.Xml;
-
+using System.Configuration;
+using System.Xml.Linq;
 
 namespace Task2
 {
     public class RequestApi
     {
-        private const string PageSize = "2000";
-        private const string StartDateTime = "0";
+       
+        static RequestApi()
+        {
+            PageSize = ConfigurationManager.AppSettings.Get("PageSize");
+            StartDateTime = ConfigurationManager.AppSettings.Get("StartDateTime");
+        }
 
+        static private string PageSize;
+        static private string StartDateTime;
 
-        static private string CurrentTime() //текущее время возвращается в формате YYYYMMDDhhmmss 
+        static public string CurrentTime(DateTime date) //текущее время возвращается в формате YYYYMMDDhhmmss 
         {
             string timestr = "";
-            DateTime date = DateTime.Now;
             timestr = string.Format("{0:yyyy''MM''dd''hh''mm''ss}", date);
             return timestr;
         }
@@ -34,30 +40,24 @@ namespace Task2
             return reader;
         }
 
-        static public List<string> RequestIdList(string address)
+        static public IEnumerable<string> RequestIdList(string address)
         {
-            List<string> idList = new List<string>();
             XmlReader reader = HttpRequest(address);
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(reader);
-            foreach (XmlNode node in xDoc.DocumentElement.SelectNodes("//data/_embedded/Purchase"))
-            {
-                idList.Add(node.FirstChild.InnerText);
-            }
+            XDocument xDoc = XDocument.Load(reader);
+            IEnumerable<string> idList = from xEl in xDoc.Element("data").Element("_embedded").Elements("Purchase")
+                                         select xEl.Element("id").Value;
             return idList;
         }
 
         static public string AddressForm() // формирование адреса большого документа
         {
-            string endDateTime = CurrentTime();
-            string[] pattern = { "http://api.federal1.ru/api/registry?", "&pageSize=", "&startDateTime=", "&endDateTime=" };
-            return pattern[0] + pattern[1] + PageSize.ToString() + pattern[2] + StartDateTime + pattern[3] + endDateTime;
+            string endDateTime = CurrentTime(DateTime.Now);
+            return $"http://api.federal1.ru/api/registry?pageSize={PageSize}&startDateTime={StartDateTime}&endDateTime{endDateTime}";
         }
 
         static public string AddressForm(string id) // формирование адреса документа отдельного торга
         {
-            const string pattern = "http://api.federal1.ru/api/registry/";
-            return pattern + id; ;
+            return $"http://api.federal1.ru/api/registry/{id}";
         }
 
     }

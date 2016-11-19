@@ -4,45 +4,89 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Task2;
-
+using NUnit.Framework;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace NUnit.Tests
 {
-    using System;
-    using NUnit.Framework;
-    using Task2;
-    using System.Xml.Serialization;
-    using System.Xml;
 
     [TestFixture]
-    public class SuccessTests
+    public class DeserializerTests
     {
         XmlSerializer serializer;
-        XmlReader reader;
-        string address;
-        data data;
 
         [SetUp]
-        public void Init()
+        public void DataInit()
         {
             serializer = new XmlSerializer(typeof(data));
-            address = RequestApi.AddressForm("Q-330");
-            reader = RequestApi.HttpRequest(address);
-            data = Program.dataDeserialize(reader, serializer);
         }
 
         [Test]
-        public void Add()
+        public void PropertyShoudlBeCorrect()
         {
-            data = Program.dataDeserialize(reader, serializer);
+            string address = RequestApi.AddressForm("Q-330");
+            XmlReader reader = RequestApi.HttpRequest(address);
+            data data = Program.dataDeserialize(reader, serializer);
             TestActionAttribute.Equals("Q-330", data._embedded.Purchase.Id);
-            // ...
+        }
+        
+        public void DataIsNotNull()
+        {
+            string address = RequestApi.AddressForm("Q-330");
+            XmlReader reader = RequestApi.HttpRequest(address);
+            data data = Program.dataDeserialize(reader, serializer);
+            Assert.IsNotNull(data);
+        }
+
+        [Test]
+        public void CurrentTimeShouldBeCorrect()
+        {
+            string currentDate = RequestApi.CurrentTime(new DateTime(2016,11,19,20,15,35));
+            Assert.AreEqual("20161119201535", currentDate);
+        }
+
+        [Test]
+        public void SevenShouldCountAsZeroSeven()
+        {
+            string currentDate = RequestApi.CurrentTime(new DateTime(2007, 7, 7, 7, 7, 7));
+            Assert.AreEqual("20070707070707", currentDate);
+        }
+
+        [Test]
+        public void CurrentDateLengthShoudlBeEqualFourteen()
+        {
+            string currentDate = RequestApi.CurrentTime(new DateTime(7, 7, 7, 7, 7, 7));
+            Assert.AreEqual(14,currentDate.Length);
+        }
+
+        [Test]
+        public void AddressFormShouldBeCorrect()
+        {
+            string address = RequestApi.AddressForm("Q-201");
+            Assert.AreEqual("http://api.federal1.ru/api/registry/Q-201", address);
+        }
+
+        [Test]
+        public void HttpRequestShouldBeSucces()
+        {
+            string address = RequestApi.AddressForm();
+            XmlReader reader = RequestApi.HttpRequest(address);
+            Assert.IsNotNull(reader);
+        }
+
+        [Test]
+        public void FailTest()
+        {
+            Assert.Fail();
         }
 
         [TearDown]
-        public void Dispose()
+        public void DataDispose()
         {
+           // DataDispose();
             
         }
     }
+    
 }

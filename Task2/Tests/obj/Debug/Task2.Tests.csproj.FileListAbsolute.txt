@@ -1,0 +1,9 @@
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\bin\Debug\Tests.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\bin\Debug\Tests.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\bin\Debug\nunit.framework.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\bin\Debug\Task2.exe
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\bin\Debug\Task2.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\bin\Debug\nunit.framework.xml
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\obj\Debug\Task2.Tests.csprojResolveAssemblyReference.cache
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\obj\Debug\Tests.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Tests\obj\Debug\Tests.pdb

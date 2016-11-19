@@ -18,12 +18,13 @@ namespace Task2
             XmlReader reader;
             address = RequestApi.AddressForm();
             data data;
-            List<string> idList = RequestApi.RequestIdList(address);
+            IEnumerable<string> idList = RequestApi.RequestIdList(address);
             foreach (string id in idList)
             {
                 address = RequestApi.AddressForm(id);
                 reader = RequestApi.HttpRequest(address);
                 data = dataDeserialize(reader, serializer);
+                Console.WriteLine(data._embedded.Purchase.Id);
                 //dataSerialize(data);
                 reader.Close();
             }
