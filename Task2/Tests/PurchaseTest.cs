@@ -7,6 +7,8 @@ using Task2;
 using NUnit.Framework;
 using System.Xml.Serialization;
 using System.Xml;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace NUnit.Tests
 {
@@ -74,18 +76,46 @@ namespace NUnit.Tests
             XmlReader reader = RequestApi.HttpRequest(address);
             Assert.IsNotNull(reader);
         }
-
-        [Test]
-        public void FailTest()
-        {
-            Assert.Fail();
-        }
+        
 
         [TearDown]
         public void DataDispose()
         {
-           // DataDispose();
             
+        }
+    }
+
+    [TestFixture]
+    public class RepositoryTest
+    {
+        IMongoDatabase database = Repository.GetDatabase("Task2");
+
+        [SetUp]
+        public void DatabaseFill()
+        {
+            Repository.AddToDatabase(new MiniTender("Q-123", 1, "26.11.2016"), database);
+            Repository.AddToDatabase(new MiniTender("A-321", 2, "01.01.2016"), database);
+            Repository.AddToDatabase(new MiniTender("T-111", 3, "03.05.2016"), database);
+        }
+
+        [Test]
+        public void IsDocExist()
+        {
+            Assert.IsTrue(Repository.IsElementExist("Q-123", database));
+        }
+
+        [Test]
+        public void IsDocDeleted()
+        {
+            Repository.RemoveFromDatabase("A-321", database);
+            Assert.IsFalse((Repository.IsElementExist("Q-321", database)));
+        }
+
+        [TearDown]
+        public void ClearDB()
+        {
+            Repository.RemoveFromDatabase("Q-123", database);
+            Repository.RemoveFromDatabase("T-111", database);
         }
     }
     

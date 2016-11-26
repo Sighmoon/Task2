@@ -13,7 +13,9 @@ namespace Task2
 {
     public class RequestApi
     {
-       
+       /// <summary>
+       /// Статический конструктор RequestApi, определяющий поля PageSize и StartDateTime
+       /// </summary>
         static RequestApi()
         {
             PageSize = ConfigurationManager.AppSettings.Get("PageSize");
@@ -23,13 +25,11 @@ namespace Task2
         static private string PageSize;
         static private string StartDateTime;
 
-        static public string CurrentTime(DateTime date) //текущее время возвращается в формате YYYYMMDDhhmmss 
-        {
-            string timestr = "";
-            timestr = string.Format("{0:yyyy''MM''dd''hh''mm''ss}", date);
-            return timestr;
-        }
-
+        /// <summary>
+        /// Метод, отвечающий за http запрос.
+        /// </summary>
+        /// <param name="address">Принимает адрес, к которому необходимо обратиться</param>
+        /// <returns>Возвращает xmlreader</returns>
         static public XmlReader HttpRequest(string address) // запрос к апи
         {
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(address);
@@ -40,6 +40,11 @@ namespace Task2
             return reader;
         }
 
+        /// <summary>
+        /// Метод, собирающий Id.
+        /// </summary>
+        /// <param name="address">Адрес документа, из которого нужно вытащить все id</param>
+        /// <returns>Возвращает список id</returns>
         static public IEnumerable<string> RequestIdList(string address)
         {
             XmlReader reader = HttpRequest(address);
@@ -49,16 +54,29 @@ namespace Task2
             return idList;
         }
 
-        static public string AddressForm() // формирование адреса большого документа
+        /// <summary>
+        /// Метод, отвечающий за формирование запроса к общему документу
+        /// </summary>
+        /// <returns>Возвращает адрес</returns>
+        static public string AddressForm() 
         {
             string endDateTime = CurrentTime(DateTime.Now);
-            return $"http://api.federal1.ru/api/registry?pageSize={PageSize}&startDateTime={StartDateTime}&endDateTime{endDateTime}";
+            return "http://api.federal1.ru/api/registry?"+
+                $"pageSize={PageSize}&startDateTime={StartDateTime}&endDateTime{endDateTime}";
         }
 
-        static public string AddressForm(string id) // формирование адреса документа отдельного торга
-        {
-            return $"http://api.federal1.ru/api/registry/{id}";
-        }
+        /// <summary>
+        /// Метод, отвечающий за формирование запроса к отдельному теднеру
+        /// </summary>
+        /// <param name="id">Принимает id тендера, адрес которого необходимо получить</param>
+        /// <returns>Возвращает адрес</returns>
+        static public string AddressForm(string id) => $"http://api.federal1.ru/api/registry/{id}";
+        /// <summary>
+        /// Метод, приобразующий DateTime в строковый вид
+        /// </summary>
+        /// <param name="date">Принимает время в виде DateTime</param>
+        /// <returns>Возвращает строку типа yyyyMMddhhmmss</returns>
+        static public string CurrentTime(DateTime date) => string.Format("{0:yyyy''MM''dd''hh''mm''ss}", date);
 
     }
 }

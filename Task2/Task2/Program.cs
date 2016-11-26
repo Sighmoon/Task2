@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Task2
 {
@@ -13,34 +15,41 @@ namespace Task2
     {
         static void Main(string[] args)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(data));
-            string address;
-            XmlReader reader;
-            address = RequestApi.AddressForm();
-            data data;
-            IEnumerable<string> idList = RequestApi.RequestIdList(address);
-            foreach (string id in idList)
-            {
-                address = RequestApi.AddressForm(id);
-                reader = RequestApi.HttpRequest(address);
-                data = dataDeserialize(reader, serializer);
-                Console.WriteLine(data._embedded.Purchase.Id);
-                //dataSerialize(data);
-                reader.Close();
-            }
+             XmlSerializer serializer = new XmlSerializer(typeof(data));
+             string address = RequestApi.AddressForm();
+             IEnumerable<string> idList = RequestApi.RequestIdList(address);
+             foreach (string id in idList)
+             {
+                 address = RequestApi.AddressForm(id);
+                 using (XmlReader reader = RequestApi.HttpRequest(address))
+                 {
+                     data data = dataDeserialize(reader, serializer);
+                     Console.WriteLine(data._embedded.Purchase.Id);
+                 }                    
+                 //dataSerialize(data);
+             }
             Console.ReadLine();
 
         }
 
+        /// <summary>
+        /// Метод, производящий десериализацию xml документа.
+        /// </summary>
+        /// <param name="reader">Предоставляет доступ к xml-документу</param>
+        /// <param name="serializer"></param>
+        /// <returns>Возвращает объект класса data</returns>
+
         static public data dataDeserialize(XmlReader reader, XmlSerializer serializer)
         {
-            data data = null;
-            data = (data)serializer.Deserialize(reader);
+            data data = (data)serializer.Deserialize(reader);
             reader.Close();
             return data;
         }
 
-
+        /// <summary>
+        /// Метод, производящий сериализацию объекта data. Данные сохраняются в xml файле, где именем файла служит его Id.
+        /// </summary>
+        /// <param name="data">Объект для сериализации</param>
         static public void dataSerialize(data data)
         {
             string path = data._embedded.Purchase.Id + ".xml";

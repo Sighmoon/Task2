@@ -4,3 +4,9 @@ C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\bin\Debug\Task2.pdb
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\obj\Debug\Task2.csprojResolveAssemblyReference.cache
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\obj\Debug\Task2.exe
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\obj\Debug\Task2.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\bin\Debug\MongoDB.Bson.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\bin\Debug\MongoDB.Driver.Core.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\bin\Debug\MongoDB.Driver.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\bin\Debug\MongoDB.Bson.xml
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\bin\Debug\MongoDB.Driver.xml
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\Task2\bin\Debug\MongoDB.Driver.Core.xml

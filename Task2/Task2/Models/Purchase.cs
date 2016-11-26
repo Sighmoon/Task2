@@ -8,31 +8,51 @@ using System.IO;
 
 namespace Task2
 {
+    /// <summary>
+    /// Класс отдельного тендера
+    /// </summary>
     [Serializable()]
     [System.Xml.Serialization.XmlRoot(elementName:"data")]
     public class data 
     {
+        /// <summary>
+        /// Пустой конструктор, необходимый для сериализации и десериализации.
+        /// </summary>
         public data()
         { }
-
+        /// <summary>
+        /// Свойство _embedded, содержит ноду с основой информации о тендере
+        /// </summary>
         [XmlElement("_embedded")]
         public _embedded _embedded { get; set; }
 
+        /// <summary>
+        /// Свойство _links, сордержит ссылку на сам тендер
+        /// </summary>
         [XmlElement("_links")]
         public _links _links { get; set; }
 
     }
 
+    /// <summary>
+    /// Класс ноды тендера, который содержит ноду Purchase
+    /// </summary>
     [Serializable()]
     public class _embedded
     {
         public _embedded()
         { }
 
+        /// <summary>
+        /// Свойство Purchase содержит всю информацию о тендере
+        /// </summary>
         [XmlElement("Purchase")]
         public Purchase Purchase { get; set; }
     }
 
+    /// <summary>
+    /// Класс ноды _links, содержищий ноду со ссылкой на сам тендер
+    /// </summary>
     [Serializable()]
     public class _links
     {
@@ -54,6 +74,9 @@ namespace Task2
 
     }
 
+    /// <summary>
+    /// Класс Purchase содержит всю информацию о тендере. 
+    /// </summary>
     [Serializable()]
     public class Purchase 
     {
