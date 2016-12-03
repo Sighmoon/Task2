@@ -15,19 +15,32 @@ namespace Task2
     {
         static void Main(string[] args)
         {
-             XmlSerializer serializer = new XmlSerializer(typeof(data));
-             string address = RequestApi.AddressForm();
-             IEnumerable<string> idList = RequestApi.RequestIdList(address);
-             foreach (string id in idList)
-             {
-                 address = RequestApi.AddressForm(id);
-                 using (XmlReader reader = RequestApi.HttpRequest(address))
-                 {
-                     data data = dataDeserialize(reader, serializer);
-                     Console.WriteLine(data._embedded.Purchase.Id);
-                 }                    
-                 //dataSerialize(data);
-             }
+            XmlSerializer serializer = new XmlSerializer(typeof(data));
+            string address = RequestApi.AddressForm();
+            IEnumerable<string> idList = RequestApi.RequestIdList(address);
+            Repository DB = new Repository("Task2", "mongodb://localhost/test");
+
+            foreach (string id in idList)
+            {
+                address = id.AddressForm();
+                using (XmlReader reader = RequestApi.HttpRequest(address))
+                {
+                    data data = dataDeserialize(reader, serializer);
+                    data.SetHashString(reader.ReadOuterXml());
+                    Console.WriteLine(data.Hash);
+                    if (DB.IsElementExist(data._embedded.Purchase.Id))
+                    {
+                        if (DB.IsHashDifferent(data.Hash))
+                        {
+                            DB.AddToDatabase(data);
+                        }
+                    }
+                    else
+                    {
+                        DB.AddToDatabase(data);
+                    }
+                }
+            }
             Console.ReadLine();
 
         }

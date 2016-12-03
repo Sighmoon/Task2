@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace Task2
 {
@@ -31,6 +32,18 @@ namespace Task2
         /// </summary>
         [XmlElement("_links")]
         public _links _links { get; set; }
+
+        public string Hash { get; set; }
+
+        public void SetHashString(string inputString)
+        {
+            StringBuilder sb = new StringBuilder();
+            HashAlgorithm algorithm = MD5.Create();
+            byte[] byteHash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+            foreach (byte b in byteHash)
+                sb.Append(b.ToString("X2"));
+            Hash = sb.ToString();
+        }
 
     }
 

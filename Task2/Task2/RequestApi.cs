@@ -11,7 +11,7 @@ using System.Xml.Linq;
 
 namespace Task2
 {
-    public class RequestApi
+    static public class RequestApi
     {
        /// <summary>
        /// Статический конструктор RequestApi, определяющий поля PageSize и StartDateTime
@@ -24,6 +24,7 @@ namespace Task2
 
         static private string PageSize;
         static private string StartDateTime;
+        private const string RequestTmp = "http://api.federal1.ru/api/registry";
 
         /// <summary>
         /// Метод, отвечающий за http запрос.
@@ -60,9 +61,8 @@ namespace Task2
         /// <returns>Возвращает адрес</returns>
         static public string AddressForm() 
         {
-            string endDateTime = CurrentTime(DateTime.Now);
-            return "http://api.federal1.ru/api/registry?"+
-                $"pageSize={PageSize}&startDateTime={StartDateTime}&endDateTime{endDateTime}";
+            string endDateTime = DateTime.Now.CurrentTime();
+            return RequestTmp+$"?pageSize={PageSize}&startDateTime={StartDateTime}&endDateTime{endDateTime}";
         }
 
         /// <summary>
@@ -70,13 +70,13 @@ namespace Task2
         /// </summary>
         /// <param name="id">Принимает id тендера, адрес которого необходимо получить</param>
         /// <returns>Возвращает адрес</returns>
-        static public string AddressForm(string id) => $"http://api.federal1.ru/api/registry/{id}";
+        static public string AddressForm(this string id) =>  RequestTmp+$"/{id}";
         /// <summary>
         /// Метод, приобразующий DateTime в строковый вид
         /// </summary>
         /// <param name="date">Принимает время в виде DateTime</param>
         /// <returns>Возвращает строку типа yyyyMMddhhmmss</returns>
-        static public string CurrentTime(DateTime date) => string.Format("{0:yyyy''MM''dd''hh''mm''ss}", date);
+        static public string CurrentTime(this DateTime date) => string.Format("{0:yyyy''MM''dd''hh''mm''ss}", date);
 
     }
 }

@@ -11,8 +11,16 @@ namespace Task2
 {
     public class Repository
     {
+        public IMongoDatabase Database { get; }
+        private readonly IMongoCollection<data> Collection;
 
-        public static IMongoDatabase GetDatabase(string dbname)
+        public Repository(string dbname, string connectionString)
+        {
+            MongoClient client = new MongoClient(connectionString);
+            IMongoDatabase database = client.GetDatabase(dbname);
+            Collection = database.GetCollection<data>("Tender");
+        }
+        public IMongoDatabase GetDatabase(string dbname)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["Task2"].ConnectionString;
             MongoClient client = new MongoClient(connectionString);
@@ -20,23 +28,26 @@ namespace Task2
             return database;
         }
         
-        public static void AddToDatabase(MiniTender data, IMongoDatabase database)
+        public void AddToDatabase(data data)
         {
-            var collection = database.GetCollection<MiniTender>("Tender");
-            collection.InsertOne(data);
+            Collection.InsertOne(data);
         }
 
-        public static void RemoveFromDatabase(string id, IMongoDatabase database)
+        public void RemoveFromDatabase(string id)
         {
-            var collection = database.GetCollection<MiniTender>("Tender");
-            collection.DeleteOne(t => t.Id == id);
+            Collection.DeleteOne(t => t._embedded.Purchase.Id == id);
         }
 
-        public static bool IsElementExist(string id, IMongoDatabase database)
+        public bool IsElementExist(string id)
         {
-            var collection = database.GetCollection<MiniTender>("Tender");
-            var tender = collection.Find<MiniTender>(t => t.Id == id);
+            var tender = Collection.Find<data>(t => t._embedded.Purchase.Id == id);
             return tender.Count()!=0;
+        }
+
+        public bool IsHashDifferent(string hash)
+        {
+            var data = Collection.Find<data>(t => t.Hash == hash);
+            return data.Count() == 0;
         }
 
     }
