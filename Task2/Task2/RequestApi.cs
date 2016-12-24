@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using System.Xml;
@@ -62,7 +60,7 @@ namespace Task2
         static public string AddressForm() 
         {
             string endDateTime = DateTime.Now.CurrentTime();
-            return RequestTmp+$"?pageSize={PageSize}&startDateTime={StartDateTime}&endDateTime{endDateTime}";
+            return $"{RequestTmp}?pageSize={PageSize}&startDateTime={StartDateTime}&endDateTime{endDateTime}";
         }
 
         /// <summary>
@@ -70,7 +68,7 @@ namespace Task2
         /// </summary>
         /// <param name="id">Принимает id тендера, адрес которого необходимо получить</param>
         /// <returns>Возвращает адрес</returns>
-        static public string AddressForm(this string id) =>  RequestTmp+$"/{id}";
+        static public string AddressForm(this string id) =>  $"{RequestTmp}/{id}";
         /// <summary>
         /// Метод, приобразующий DateTime в строковый вид
         /// </summary>

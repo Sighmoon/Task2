@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using System.IO;
-using System.Security.Cryptography;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Task2
 {
@@ -32,18 +27,12 @@ namespace Task2
         /// </summary>
         [XmlElement("_links")]
         public _links _links { get; set; }
-
+        [BsonId]
+        public string _id { get; set; }
         public string Hash { get; set; }
 
-        public void SetHashString(string inputString)
-        {
-            StringBuilder sb = new StringBuilder();
-            HashAlgorithm algorithm = MD5.Create();
-            byte[] byteHash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
-            foreach (byte b in byteHash)
-                sb.Append(b.ToString("X2"));
-            Hash = sb.ToString();
-        }
+
+
 
     }
 
@@ -95,7 +84,6 @@ namespace Task2
     {
         public Purchase()
         { }
-
 
         [XmlElement("id")]
         public string Id { get; set; }
@@ -219,4 +207,5 @@ namespace Task2
         [XmlElement("name")]
         public string Name { get; set; }
     }
+
 }

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using MongoDB.Driver;
-using MongoDB.Bson;
-using System.Configuration;
+
 
 namespace Task2
 {
     public class Repository
     {
-        public IMongoDatabase Database { get; }
         private readonly IMongoCollection<data> Collection;
 
         public Repository(string dbname, string connectionString)
@@ -20,17 +14,14 @@ namespace Task2
             IMongoDatabase database = client.GetDatabase(dbname);
             Collection = database.GetCollection<data>("Tender");
         }
-        public IMongoDatabase GetDatabase(string dbname)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["Task2"].ConnectionString;
-            MongoClient client = new MongoClient(connectionString);
-            IMongoDatabase database = client.GetDatabase(dbname);
-            return database;
-        }
         
         public void AddToDatabase(data data)
         {
-            Collection.InsertOne(data);
+            if(IsHashDifferent(data.Hash,data._id))
+            {
+                Collection.ReplaceOne<data>(t => t._embedded.Purchase.Id == data._embedded.Purchase.Id, data,
+                    new UpdateOptions() { IsUpsert = true });
+            }
         }
 
         public void RemoveFromDatabase(string id)
@@ -41,13 +32,20 @@ namespace Task2
         public bool IsElementExist(string id)
         {
             var tender = Collection.Find<data>(t => t._embedded.Purchase.Id == id);
-            return tender.Count()!=0;
+            return tender.Any();
         }
 
-        public bool IsHashDifferent(string hash)
+        public bool IsHashDifferent(string hash, string id)
         {
-            var data = Collection.Find<data>(t => t.Hash == hash);
-            return data.Count() == 0;
+            var tender = Collection.Find<data>(t=>t._id==id);
+            if (tender.Any<data>()) 
+            {
+                return tender.First().Hash != hash;
+            }
+            else
+            {
+                return true;
+            }
         }
 
     }

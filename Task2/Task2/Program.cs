@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
+using System.Security.Cryptography;
 using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace Task2
 {
@@ -26,19 +24,8 @@ namespace Task2
                 using (XmlReader reader = RequestApi.HttpRequest(address))
                 {
                     data data = dataDeserialize(reader, serializer);
-                    data.SetHashString(reader.ReadOuterXml());
-                    Console.WriteLine(data.Hash);
-                    if (DB.IsElementExist(data._embedded.Purchase.Id))
-                    {
-                        if (DB.IsHashDifferent(data.Hash))
-                        {
-                            DB.AddToDatabase(data);
-                        }
-                    }
-                    else
-                    {
-                        DB.AddToDatabase(data);
-                    }
+                    Console.WriteLine(data.Hash+" "+ data._embedded.Purchase.Id);
+                    DB.AddToDatabase(data);
                 }
             }
             Console.ReadLine();
@@ -55,6 +42,8 @@ namespace Task2
         static public data dataDeserialize(XmlReader reader, XmlSerializer serializer)
         {
             data data = (data)serializer.Deserialize(reader);
+            SetHashString(ref data, reader.ReadOuterXml());
+            data._id = new ObjectId(data.Hash).ToString();
             reader.Close();
             return data;
         }
@@ -72,6 +61,16 @@ namespace Task2
                 serializer.Serialize(fs, data);
                 Console.WriteLine("Объект " + data._embedded.Purchase.Id + " сериализован");
             }
+        }
+
+        static public void SetHashString(ref data data, string inputString)
+        {
+            StringBuilder sb = new StringBuilder();
+            HashAlgorithm algorithm = MD5.Create();
+            byte[] byteHash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+            foreach (byte b in byteHash)
+                sb.Append(b.ToString("X2"));
+            data.Hash = sb.ToString();
         }
     }
 
