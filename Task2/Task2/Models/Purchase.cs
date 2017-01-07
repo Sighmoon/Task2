@@ -122,7 +122,7 @@ namespace Task2
     }
 
     [Serializable()]
-    public struct organizationStruct
+    public class organizationStruct
     {
 
         [XmlElement("shortName")]
@@ -177,7 +177,7 @@ namespace Task2
     }
 
     [Serializable]
-    public struct NdsStruct
+    public class NdsStruct
     {
         [XmlElement("digitalCode")]
         public int DigitalCode { get; set; }
@@ -188,7 +188,7 @@ namespace Task2
     }
 
     [Serializable]
-    public struct CurrencyStruct
+    public class CurrencyStruct
     {
         [XmlElement("digitalCode")]
         public int DigitalCode { get; set; }
@@ -199,7 +199,7 @@ namespace Task2
     }
 
     [Serializable]
-    public struct OfferPriceTypeStruct
+    public class OfferPriceTypeStruct
     {
         [XmlElement("code")]
         public int Code { get; set; }

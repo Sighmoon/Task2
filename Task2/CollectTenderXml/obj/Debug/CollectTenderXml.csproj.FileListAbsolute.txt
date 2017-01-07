@@ -1,0 +1,8 @@
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\CollectTenderXml.exe.config
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\CollectTenderXml.exe
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\CollectTenderXml.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\RabbitMQ.Client.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\RabbitMQ.Client.xml
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\obj\Debug\CollectTenderXml.csprojResolveAssemblyReference.cache
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\obj\Debug\CollectTenderXml.exe
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\obj\Debug\CollectTenderXml.pdb

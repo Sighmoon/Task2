@@ -1,0 +1,15 @@
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\IndexTenderXml.exe.config
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\IndexTenderXml.exe
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\IndexTenderXml.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\MongoDB.Bson.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\MongoDB.Driver.Core.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\MongoDB.Driver.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\RabbitMQ.Client.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\MongoDB.Bson.xml
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\MongoDB.Driver.xml
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\MongoDB.Driver.Core.xml
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\RabbitMQ.Client.xml
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\obj\Debug\IndexTenderXml.csprojResolveAssemblyReference.cache
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\obj\Debug\IndexTenderXml.exe
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\obj\Debug\IndexTenderXml.pdb

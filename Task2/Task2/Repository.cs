@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using MongoDB.Driver;
 
-
 namespace Task2
 {
     public class Repository
@@ -38,9 +37,10 @@ namespace Task2
         public bool IsHashDifferent(string hash, string id)
         {
             var tender = Collection.Find<data>(t=>t._id==id);
+            
             if (tender.Any<data>()) 
             {
-                return tender.First().Hash != hash;
+                return tender.First<data>().Hash != hash;
             }
             else
             {

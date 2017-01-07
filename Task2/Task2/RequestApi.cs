@@ -5,7 +5,6 @@ using System.Net;
 using System.IO;
 using System.Xml;
 using System.Configuration;
-using System.Xml.Linq;
 
 namespace Task2
 {
@@ -29,14 +28,17 @@ namespace Task2
         /// </summary>
         /// <param name="address">Принимает адрес, к которому необходимо обратиться</param>
         /// <returns>Возвращает xmlreader</returns>
-        static public XmlReader HttpRequest(string address) // запрос к апи
+        static public XmlDocument HttpRequest(string address) // запрос к апи
         {
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(address);
             request.Accept = "*/*";
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream stream = response.GetResponseStream();
             XmlReader reader = XmlReader.Create(stream);
-            return reader;
+            XmlDocument xDoc = new XmlDocument();
+            
+            xDoc.Load(reader);
+            return xDoc;
         }
 
         /// <summary>
@@ -46,10 +48,9 @@ namespace Task2
         /// <returns>Возвращает список id</returns>
         static public IEnumerable<string> RequestIdList(string address)
         {
-            XmlReader reader = HttpRequest(address);
-            XDocument xDoc = XDocument.Load(reader);
-            IEnumerable<string> idList = from xEl in xDoc.Element("data").Element("_embedded").Elements("Purchase")
-                                         select xEl.Element("id").Value;
+             XmlDocument xDoc = HttpRequest(address);
+                IEnumerable<string> idList = from xEl in xDoc.SelectSingleNode("data").SelectSingleNode("_embedded").ChildNodes.Cast<XmlNode>()
+                                         select xEl.SelectSingleNode("id").InnerText;
             return idList;
         }
 

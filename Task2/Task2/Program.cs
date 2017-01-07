@@ -6,6 +6,7 @@ using System.IO;
 using System.Xml;
 using System.Security.Cryptography;
 using MongoDB.Bson;
+using System.Configuration;
 
 namespace Task2
 {
@@ -16,17 +17,18 @@ namespace Task2
             XmlSerializer serializer = new XmlSerializer(typeof(data));
             string address = RequestApi.AddressForm();
             IEnumerable<string> idList = RequestApi.RequestIdList(address);
-            Repository DB = new Repository("Task2", "mongodb://localhost/test");
+            Repository DB = new Repository(ConfigurationManager.AppSettings.Get("RepositoryName"),
+                ConfigurationManager.ConnectionStrings["Task2ConStr"].ConnectionString);
 
             foreach (string id in idList)
             {
                 address = id.AddressForm();
-                using (XmlReader reader = RequestApi.HttpRequest(address))
-                {
-                    data data = dataDeserialize(reader, serializer);
-                    Console.WriteLine(data.Hash+" "+ data._embedded.Purchase.Id);
-                    DB.AddToDatabase(data);
-                }
+
+                XmlDocument xDoc = RequestApi.HttpRequest(address);
+                data data = dataDeserialize(xDoc.OuterXml, serializer);
+                Console.WriteLine(data.Hash+" "+ data._embedded.Purchase.Id);
+                data._id = data._embedded.Purchase.Id;
+                DB.AddToDatabase(data);
             }
             Console.ReadLine();
 
@@ -39,12 +41,16 @@ namespace Task2
         /// <param name="serializer"></param>
         /// <returns>Возвращает объект класса data</returns>
 
-        static public data dataDeserialize(XmlReader reader, XmlSerializer serializer)
+        static public data dataDeserialize(string xml, XmlSerializer serializer)
         {
-            data data = (data)serializer.Deserialize(reader);
-            SetHashString(ref data, reader.ReadOuterXml());
-            data._id = new ObjectId(data.Hash).ToString();
-            reader.Close();
+            data data = null;
+            using (XmlReader reader = XmlReader.Create(new StringReader(xml)))
+            {
+                data = (data)serializer.Deserialize(reader);
+                SetHashString(ref data, xml);
+                data._id = new ObjectId(data.Hash).ToString();
+                reader.Close();
+            }
             return data;
         }
 
