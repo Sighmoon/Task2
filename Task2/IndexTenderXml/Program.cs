@@ -8,31 +8,30 @@ using MongoDB.Bson;
 using System.Security.Cryptography;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using QueueFunc;
 
 namespace IndexTenderXml
 {
     class Program
     {
-        static XmlSerializer serializer = new XmlSerializer(typeof(data));
-        static Repository DB = new Repository(ConfigurationManager.AppSettings.Get("RepositoryName"),
-            ConfigurationManager.ConnectionStrings["Task2ConStr"].ConnectionString);
 
         static void Main(string[] args)
         {
-            var connectionParams = new ConnectionFactory
-            { HostName = ConfigurationManager.AppSettings.Get("RabbitMQServerIP")};
-            using (var connection = connectionParams.CreateConnection())
-            {
-                using (var channel = connection.CreateModel())
-                {
-                    channel.QueueDeclare("Xml Queue", true, false, false, null);
-                    var consumer = new EventingBasicConsumer(channel);
-                    consumer.Received += OnReceivedMessage;
-                    channel.BasicConsume("Xml Queue", true, consumer);
-                }
-            }
-            Console.ReadKey();
+            QueueParams param = new QueueParams(ConfigurationManager.AppSettings.Get("RabbitMQServerIP"), "Xml-Queue");
+            QueueObj Qobj = QueueObj.GetQueueObj(param);
+            Qobj.ConsumeMessages<string>(SomeMethods.MessageProcces, true);
+            
         }
+
+    }
+    /// <summary>
+    /// Класс содержит некоторые дополнительные методы
+    /// </summary>
+    static class SomeMethods
+    {
+        static XmlSerializer serializer = new XmlSerializer(typeof(data));
+        static Repository DB = new Repository(ConfigurationManager.AppSettings.Get("RepositoryName"),
+            ConfigurationManager.ConnectionStrings["Task2ConStr"].ConnectionString);
 
         /// <summary>
         /// Метод, производящий десериализацию xml документа.
@@ -40,7 +39,6 @@ namespace IndexTenderXml
         /// <param name="reader">Предоставляет доступ к xml-документу</param>
         /// <param name="serializer"></param>
         /// <returns>Возвращает объект класса data</returns>
-
         static public data dataDeserialize(string xml, XmlSerializer serializer)
         {
             data data = null;
@@ -85,20 +83,18 @@ namespace IndexTenderXml
         }
 
         /// <summary>
-        /// Реализация ивента, срабатывающего при получение сообщения с сервера RabbitMQ.
+        /// Обработка сообщения, содержащего xml-строку
         /// </summary>
+        /// <param name="XmlString">xml-строка</param>
 
-        static void OnReceivedMessage(object sender, BasicDeliverEventArgs e)
+        static public void MessageProcces(string XmlString)
         {
             XmlDocument xDoc = new XmlDocument();
-            var body = e.Body;
-            string XmlString = Encoding.UTF8.GetString(body);
-            Console.WriteLine("Пришло: " + XmlString);
             xDoc.LoadXml(XmlString);
             data data = dataDeserialize(xDoc.OuterXml, serializer);
             data._id = data._embedded.Purchase.Id;
             DB.AddToDatabase(data);
-
+            Console.WriteLine("Сообщение " + data._id + " было добавлено в БД");
         }
 
     }

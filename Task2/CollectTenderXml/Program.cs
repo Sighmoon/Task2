@@ -4,6 +4,7 @@ using System.Xml;
 using RabbitMQ.Client;
 using System.Configuration;
 using System.Text;
+using QueueFunc;
 
 namespace CollectTenderXml
 {
@@ -11,32 +12,27 @@ namespace CollectTenderXml
     {
         static void Main(string[] args)
         {
-            string address = RequestApi.AddressForm();
-            IEnumerable<string> idList = RequestApi.RequestIdList(address);
+            QueueParams param = new QueueParams(ConfigurationManager.AppSettings.Get("RabbitMQServerIP"), "Xml-Queue");
+            QueueObj Qobj = QueueObj.GetQueueObj(param);
 
-            var connectionParams = new ConnectionFactory
-            { HostName = ConfigurationManager.AppSettings.Get("RabbitMQServerIP") };
-            using (var connection = connectionParams.CreateConnection())
+            string address = RequestApi.AddressForm(1);
+            int pageAmount = RequestApi.GetPageAmount(address);
+            for(int i = 1; i <= pageAmount; i++)
             {
-                using (var channel = connection.CreateModel())
+
+                IEnumerable<string> idList = RequestApi.RequestIdList(address);
+
+                foreach(string id in idList)
                 {
-                    channel.QueueDeclare("Xml Queue", true, false, false, null);
-                    int i = 0;
-                    foreach (string id in idList)
-                    {
-                        if(i<3)
-                        {
-                            address = id.AddressForm();
-                            XmlDocument xDoc = RequestApi.HttpRequest(address);
-                            string xmlString = xDoc.OuterXml;
-                            var body = Encoding.UTF8.GetBytes(xmlString);
-                            channel.BasicPublish("", "Xml Queue", null, body);
-                        }
-                        i++;
-                    }
-                    Console.ReadKey();
+                    address = id.AddressForm();
+                    XmlDocument xDoc = RequestApi.HttpRequest(address);
+                    string xmlString = xDoc.OuterXml;
+                    Qobj.PublishMessage<string>(xmlString);
                 }
+                Console.WriteLine($"Выполнена загрузка документов со страницы {i}");
+                address = RequestApi.AddressForm(i+1);
             }
+            Console.ReadKey();
         }
     }
 }

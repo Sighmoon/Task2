@@ -49,8 +49,8 @@ namespace Task2
         static public IEnumerable<string> RequestIdList(string address)
         {
              XmlDocument xDoc = HttpRequest(address);
-                IEnumerable<string> idList = from xEl in xDoc.SelectSingleNode("data").SelectSingleNode("_embedded").ChildNodes.Cast<XmlNode>()
-                                         select xEl.SelectSingleNode("id").InnerText;
+            IEnumerable<string> idList = from xEl in xDoc.SelectSingleNode("//data/_embedded/Purchase/id").Cast<XmlNode>()
+                                         select xEl.InnerText;
             return idList;
         }
 

@@ -6,3 +6,7 @@ C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\Ra
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\obj\Debug\CollectTenderXml.csprojResolveAssemblyReference.cache
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\obj\Debug\CollectTenderXml.exe
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\obj\Debug\CollectTenderXml.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\QueueFunc.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\QueueFunc.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\CollectTenderXml\bin\Debug\Newtonsoft.Json.xml

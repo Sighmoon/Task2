@@ -50,7 +50,7 @@ namespace CollectTenderXml
         static public IEnumerable<string> RequestIdList(string address)
         {
              XmlDocument xDoc = HttpRequest(address);
-                IEnumerable<string> idList = from xEl in xDoc.SelectSingleNode("data").SelectSingleNode("_embedded").ChildNodes.Cast<XmlNode>()
+             IEnumerable<string> idList = from xEl in xDoc.SelectSingleNode("data").SelectSingleNode("_embedded").ChildNodes.Cast<XmlNode>()
                                          select xEl.SelectSingleNode("id").InnerText;
             return idList;
         }
@@ -59,10 +59,21 @@ namespace CollectTenderXml
         /// Метод, отвечающий за формирование запроса к общему документу
         /// </summary>
         /// <returns>Возвращает адрес</returns>
-        static public string AddressForm() 
+        static public string AddressForm(int page) 
         {
             string endDateTime = DateTime.Now.CurrentTime();
-            return $"{RequestTmp}?pageSize={PageSize}&startDateTime={StartDateTime}&endDateTime{endDateTime}";
+            return $"{RequestTmp}?pageSize={PageSize}&startDateTime={StartDateTime}&endDateTime={endDateTime}&page={page}";
+        }
+        /// <summary>
+        /// Метод, отвечающий за нахождение количества страниц тендеров
+        /// </summary>
+        /// <returns>Количество страниц тендеров</returns>
+        static public int GetPageAmount(string address)
+        {
+            XmlDocument xDoc = HttpRequest(address);
+            string lastAddress = xDoc.SelectSingleNode("//data/_links/last/href").InnerText;
+            int page = lastAddress.LastIndexOf("page=")+5;
+            return Convert.ToInt32(lastAddress.Substring(page));
         }
 
         /// <summary>

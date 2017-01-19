@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Task2;
 using NUnit.Framework;
 using System.Xml.Serialization;
 using System.Xml;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace NUnit.Tests

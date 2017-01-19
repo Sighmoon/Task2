@@ -13,3 +13,7 @@ C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\Rabb
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\obj\Debug\IndexTenderXml.csprojResolveAssemblyReference.cache
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\obj\Debug\IndexTenderXml.exe
 C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\obj\Debug\IndexTenderXml.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\QueueFunc.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\QueueFunc.pdb
+C:\Users\Сергей\Documents\GitHub\Task2\Task2\IndexTenderXml\bin\Debug\Newtonsoft.Json.xml
